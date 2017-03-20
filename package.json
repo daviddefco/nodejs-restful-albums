@@ -1,0 +1,45 @@
+{
+  "name": "nodejs-restful-albums",
+  "version": "1.0.0",
+  "description": "A restful API to store image albums",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc -w | nodemon target/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daviddefco/nodejs-restful-albums.git"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "restful"
+  ],
+  "author": "daviddefco",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daviddefco/nodejs-restful-albums/issues"
+  },
+  "homepage": "https://github.com/daviddefco/nodejs-restful-albums#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "connect-multiparty": "^2.0.0",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.1",
+    "bluebird": "^3.4.7",
+    "debug": "^2.2.0",
+    "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "0.0.33",
+    "@types/debug": "0.0.29",
+    "@types/express": "^4.0.33",
+    "@types/mongoose": "^4.7.7",
+    "@types/morgan": "^1.7.32",
+    "@types/node": "^6.0.46",    
+    "nodemon": "^1.11.0",
+    "ts-node": "^1.6.1",
+    "typescript": "^2.0.6"
+  }
+}
