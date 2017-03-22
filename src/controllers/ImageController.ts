@@ -2,7 +2,9 @@ import { Request, Response, NextFunction} from 'express'
 import { Image, IImageModel } from '../models/schemas/Image'
 import { Album } from '../models/schemas/Album'
 import { DocumentQuery } from 'mongoose'
+
 import * as path from 'path'
+import * as fs from 'fs'
 
 export class ImageController {
 
@@ -102,15 +104,35 @@ export class ImageController {
 
     uploadImageFile(req: Request, res: Response, next: NextFunction) {
         let imageId = req.params.id
-        let fileName
 
-        if((<any>req).files) {
-            let filePath = (<any>req).files.image.path
-            let fileSplit = filePath.split('\\')
-            fileName = fileSplit[1]
-            console.log('filename :' + fileName)
+        if(req.file) {
+            Image.findByIdAndUpdate(imageId, { fileName: req.file.filename })
+            .then((updatedImage: IImageModel) => {
+                res.status(200).json({ image: updatedImage })
+            })
+            .catch((error => {
+                res.status(500).json({ error: error })
+            }))            
+        } else {
+            res.status(404).json({ error: "No file found to upload" })
         }
     }
+
+    getImageFile(req: Request, res: Response, next: NextFunction) {
+        let imageFile = req.params.id
+        let filePath = `uploads/${ imageFile }`
+
+        fs.exists(filePath, exists => {
+            if(exists) {
+                res.contentType("image/png")
+                res.sendFile(path.resolve(`uploads/${ imageFile }`))
+            } else {
+                res.status(404).json(
+                    { error: `No image file found with ID ${ imageFile }` }
+                )
+            }
+        })
+    }    
 }
 
 export default new ImageController()

@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import AlbumController from '../controllers/AlbumController'
 import ImageController from '../controllers/ImageController'
-import * as multipart from 'connect-multiparty'
+import * as multer from 'multer'
 
 export class Routes {
-    router: Router
-    multipartMiddleware = multipart({ uploadDir: '../../uploads' })
+    router: Router    
+    multerMiddleware = multer({ dest: 'uploads' })
 
     constructor() {
         this.router = Router()
@@ -25,7 +25,12 @@ export class Routes {
         this.router.post('/image', ImageController.saveImage)
         this.router.put('/image/:id', ImageController.updateImage)
         this.router.delete('/image/:id', ImageController.deleteImage)
-        this.router.post('/image/:id', this.multipartMiddleware, ImageController.uploadImageFile)
+        // multer middleware accepts only one file in the field 'image'
+        this.router.post(
+            '/upload-image/:id', 
+            this.multerMiddleware.single('image'), ImageController.uploadImageFile
+        )
+        this.router.get('/image-file/:id', ImageController.getImageFile)
     }
 }
 
